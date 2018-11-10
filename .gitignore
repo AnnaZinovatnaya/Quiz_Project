@@ -1,2 +1,4 @@
 quiz_env/
 quizproject/.idea/
+quizproject/*/__pycache__/
+quizproject/*/*/__pycache__/

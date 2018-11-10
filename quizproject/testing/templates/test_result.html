@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test - {{ test.name }}</title>
+</head>
+<body>
+  <h1>{{ test.name }}</h1>
+  {% for question in questions_list %}
+    <p>
+      {{ question }}
+    </p>
+    {% for answer in answers_list %}
+      {% if answer.question.id == question.id %}
+        {% if answer.is_correct %}
+          <div>
+            <input type="checkbox"><label><font color="green">{{ answer }}</font></label>
+          </div>
+        {% else %}
+          <div>
+            <input type="checkbox"><label>{{ answer }}</label>
+          </div>
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+  <p>
+    <form action="/test/{{test.id}}/result/">
+      <input type="submit" value="Check" />
+    </form>
+  </p>
+</body>
+</html>
