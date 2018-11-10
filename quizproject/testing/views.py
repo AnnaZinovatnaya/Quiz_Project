@@ -1,11 +1,12 @@
-from django.http import HttpResponse
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from . import models
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.urls import reverse
 
 
 def all_tests(request):
     return render(request, 'allTests.html', context={'tests_list': models.Test.objects.all()})
+
 
 def test(request, test_id):
     try:
@@ -33,3 +34,7 @@ def check(request, test_id):
     except models.Test.DoesNotExist:
         raise Http404
     return render(request, 'test_result.html', {'test': t, 'questions_list': questions, 'answers_list': answers})
+
+
+def redirect_to_all_tests(request):
+    return HttpResponseRedirect(reverse('all_tests'))
