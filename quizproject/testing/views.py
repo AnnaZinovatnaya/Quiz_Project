@@ -7,33 +7,53 @@ from django.urls import reverse
 def all_tests(request):
     return render(request, 'allTests.html', context={'tests_list': models.Test.objects.all()})
 
-
-def test(request, test_id):
+def question(request, test_id, question_number):
     try:
         t = models.Test.objects.get(pk=test_id)
+
+        # find all questions of a given test
         questions = models.Question.objects.filter(test__pk=test_id)
-        answers = []
-        for q in questions:
-            q_answers = models.Answer.objects.filter(question__pk=q.id)
-            for a in q_answers:
-                answers.append(a)
+
+        # find needed question
+        question = questions[int(question_number)-1]
+
+        # find answers of the question
+        answers = models.Answer.objects.filter(question__pk=question.id)
     except models.Test.DoesNotExist:
         raise Http404
-    return render(request, 'test.html', {'test': t, 'questions_list': questions, 'answers_list': answers})
+    return render(request, 'question.html', {'test': t, 'question_number': question_number, 'question': question, 'answers': answers})
 
 
-def check(request, test_id):
+def check(request, test_id, question_number):
     try:
         t = models.Test.objects.get(pk=test_id)
+
+        # find all questions of a given test
         questions = models.Question.objects.filter(test__pk=test_id)
-        answers = []
-        for q in questions:
-            q_answers = models.Answer.objects.filter(question__pk=q.id)
-            for a in q_answers:
-                answers.append(a)
+
+        # find needed question
+        question = questions[int(question_number)-1]
+
+        # find answers of the question
+        answers = models.Answer.objects.filter(question__pk=question.id)
+        number_of_answers = len(answers)
+
+        # get user answers from form
+        user_answers = []
+        i = 1
+        while i < (number_of_answers + 1):
+            user_answer = request.POST.get('answer'+str(i))
+            if user_answer == None:
+                user_answers.append(False)
+            else:
+                user_answers.append(True)
+            i = i + 1
+        next_question = int(question_number)+1
+        if next_question == (len(questions) + 1):
+            next_question = 0
     except models.Test.DoesNotExist:
         raise Http404
-    return render(request, 'test_result.html', {'test': t, 'questions_list': questions, 'answers_list': answers})
+    return render(request, 'question_result.html', {'test': t, 'question': question, 'answers': answers, 'user_answers': user_answers, 'next_question': str(next_question)})
 
 
 def redirect_to_all_tests(request):

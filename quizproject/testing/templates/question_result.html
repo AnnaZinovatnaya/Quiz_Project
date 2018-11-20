@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test - {{ test.name }}</title>
+</head>
+<body>
+  {% load custom_tags %}
+  <h1>{{ test.name }}</h1>
+  {% if next_question != '0' %}
+    <form action="/test/{{test.id}}/{{next_question}}/" method="post">
+  {% else %}
+    <form action="/">
+  {% endif %}
+    {% csrf_token %}
+    <h2>{{ question.name }}</h2>
+    {% for answer in answers %}
+      {% if user_answers|get_at_index:forloop.counter0 == True and answer.is_correct == False %}
+        <p>
+          <input type="checkbox" name="answer{{forloop.counter}}" checked><label for="answer{{forloop.counter}}"><font color="red">{{ answer }}</font> This is not a correct answer!</label>
+        </p>
+      {% elif user_answers|get_at_index:forloop.counter0 == True and answer.is_correct == True %}
+        <p>
+          <input type="checkbox" name="answer{{forloop.counter}}" checked><label for="answer{{forloop.counter}}"><font color="green">{{ answer }}</font></label>
+        </p>
+      {% elif user_answers|get_at_index:forloop.counter0 == False and answer.is_correct == False %}
+        <p>
+          <input type="checkbox" name="answer{{forloop.counter}}"><label for="answer{{forloop.counter}}">{{ answer }}</label>
+        </p>
+      {% elif user_answers|get_at_index:forloop.counter0 == False and answer.is_correct == True %}
+        <p>
+          <input type="checkbox" name="answer{{forloop.counter}}"><label for="answer{{forloop.counter}}"><font color="red">{{ answer }}</font> This is a correct answer!</label>
+        </p>
+      {% endif %}
+    {% endfor %}
+    <p>
+      {% if next_question != '0' %}
+        <input type="submit" value="Next" />
+      {% else %}
+        <input type="submit" value="Show Test Result" />
+      {% endif %}
+    </p>
+  </form>
+</body>
+</html>
