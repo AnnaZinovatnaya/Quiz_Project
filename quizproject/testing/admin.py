@@ -8,6 +8,8 @@ class AnswerInline(admin.TabularInline):
 class QuestionAdmin(admin.ModelAdmin):
     fields = ['test', 'name']
     inlines = [AnswerInline]
+    list_display = ('name', 'test')
+    list_filter = ['test']
 
 class QuestionInline(admin.TabularInline):
     model = Question
