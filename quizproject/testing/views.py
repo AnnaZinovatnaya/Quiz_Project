@@ -5,7 +5,12 @@ from django.urls import reverse
 
 
 def all_tests(request):
-    return render(request, 'allTests.html', context={'tests_list': models.Test.objects.all()})
+    tests = models.Test.objects.all()
+    valid_tests = []
+    for test in tests:
+        if len(models.Question.objects.filter(test__pk=test.id)) > 0:
+            valid_tests.append(test)
+    return render(request, 'allTests.html', context={'tests_list': valid_tests})
 
 def question(request, test_id, question_number):
     try:
