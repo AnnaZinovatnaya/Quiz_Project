@@ -8,9 +8,9 @@
   {% load custom_tags %}
   <h1>{{ test.name }}</h1>
   {% if next_question != '0' %}
-    <form action="/test/{{test.id}}/{{next_question}}/" method="post">
+    <form action="{% url 'question' test.id next_question %}" method="post">
   {% else %}
-    <form action="/">
+    <form action="{% url 'home' %}">
   {% endif %}
     {% csrf_token %}
     <h2>{{ question.name }}</h2>

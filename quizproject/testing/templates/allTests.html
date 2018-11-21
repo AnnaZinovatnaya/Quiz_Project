@@ -8,7 +8,7 @@
     <h1>All Tests</h1>
     {% for t in tests_list %}
       <ul>
-        <a href="/test/{{t.id}}/1/" >{{t.name}}</a>
+        <a href="{% url 'question' t.id 1 %}" >{{ t.name }}</a>
       </ul>
     {% endfor %}
   </body>
