@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Test - {{ test.name }}</title>
-</head>
-<body>
-  <h1>{{ test.name }}</h1>
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <h1 align="center">{{ test.name }}</h1>
 
   <form action="{% url 'question_result' test.id question_number %}" method="post">
     {% csrf_token %}
@@ -19,5 +16,5 @@
       <input type="submit" value="Check" />
     </p>
   </form>
-</body>
-</html>
+
+{% endblock %}
