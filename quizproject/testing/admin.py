@@ -1,7 +1,8 @@
 from django.contrib import admin
-from .models import Test, Question, Answer
+from .models import Test, Question, Answer, UserAnswer
 from django.forms.models import BaseInlineFormSet
 from django.core.exceptions import ValidationError
+
 
 class AnswerInlineFormSet(BaseInlineFormSet):
     def clean(self):
@@ -18,10 +19,12 @@ class AnswerInlineFormSet(BaseInlineFormSet):
         if total_checked < 1:
             raise ValidationError("You must have at least one correct answer")
 
+
 class AnswerInline(admin.TabularInline):
     formset = AnswerInlineFormSet
     model = Answer
     extra = 1
+
 
 class QuestionAdmin(admin.ModelAdmin):
     fields = ['test', 'name']
@@ -29,9 +32,11 @@ class QuestionAdmin(admin.ModelAdmin):
     list_display = ('name', 'test')
     list_filter = ['test']
 
+
 class QuestionInline(admin.TabularInline):
     model = Question
     extra = 1
+
 
 class TestAdmin(admin.ModelAdmin):
     list_display = ["name", "is_valid"]
@@ -41,5 +46,7 @@ class TestAdmin(admin.ModelAdmin):
 
     is_valid.boolean = True
 
+
 admin.site.register(Test, TestAdmin)
 admin.site.register(Question, QuestionAdmin)
+admin.site.register(UserAnswer)
