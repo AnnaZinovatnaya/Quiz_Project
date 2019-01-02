@@ -31,3 +31,4 @@ class UserAnswer(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     is_correctly_answered = models.BooleanField()
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
+    user_test_uuid = models.CharField(max_length=32, default="00000000000000000000000000000000")

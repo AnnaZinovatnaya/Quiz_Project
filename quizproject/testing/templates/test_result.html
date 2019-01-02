@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <h2>You have scored {{ test_result }}% </h2>
+
+  {% if test_result > 50 %}
+    <h2>Good job! </h2>
+  {% else %}
+    <h2>You can do better</h2>
+  {% endif %}
+
+{% endblock %}

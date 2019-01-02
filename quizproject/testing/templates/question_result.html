@@ -7,7 +7,7 @@
   {% if next_question != '0' %}
     <form action="{% url 'question' test.id next_question %}" method="post">
   {% else %}
-    <form action="{% url 'home' %}">
+    <form action="{% url 'test_report' test.id %}" method="get">
   {% endif %}
     {% csrf_token %}
     <h2>{{ question.name }}</h2>
