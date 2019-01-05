@@ -1,15 +1,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+{% load custom_tags %}
   {% if user.is_authenticated %}
     <h3>Hi, {{ user.username }}!</h3>
     <a href="{% url 'logout' %}">Logout</a>
     <h2 align="middle">All Tests</h2>
-    {% for t in tests_list %}
+    {% for test in valid_tests %}
       <ul>
         <div class="container">
-          <a href="{% url 'question' t.id 1 %}">{{ t.name }}</a>
+          <a href="{% url 'question' test.id 1 %}">{{ test.name }}</a>
+          {% if user_tests|get_at_index:test.id is True %} X {% endif %}
         </div>
       </ul>
     {% endfor %}

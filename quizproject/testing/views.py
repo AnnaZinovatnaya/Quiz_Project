@@ -1,21 +1,33 @@
 from django.http import Http404, HttpResponseRedirect
 from . import models
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.urls import reverse
-
 import uuid
 
 
 current_user_test_uuid = "00000000000000000000000000000000"
 
 
+def is_taken_by_current_user(test, user):
+    user_answers = models.UserAnswer.objects.filter(user=user)
+    for user_answer in user_answers:
+        if user_answer.answer.question.test == test:
+            return True
+    return False
+
+
 def show_all_tests(request):
-    tests = models.Test.objects.all()
+    # dictionary {test.id : is_taken}
+    tests = {}
+    # tests that have at least one question
     valid_tests = []
-    for test in tests:
+    for test in models.Test.objects.all():
         if len(models.Question.objects.filter(test__pk=test.id)) > 0:
             valid_tests.append(test)
-    return render(request, 'allTests.html', context={'tests_list': valid_tests})
+            tests.update({test.id: is_taken_by_current_user(test, request.user)})
+
+    print(tests)
+    return render(request, 'allTests.html', context={'valid_tests': valid_tests, 'user_tests': tests})
 
 
 def show_question(request, test_id, question_number):
@@ -89,8 +101,7 @@ def redirect_to_all_tests(request):
 
 
 # function that counts test score of a given user
-# TODO user variable is not needed
-def count_test_result(test_id, user):
+def count_test_result(test_id):
     number_of_correct_answers = 0
     total_number_of_answers = 0
 
@@ -107,7 +118,7 @@ def count_test_result(test_id, user):
 
 
 def show_test_report(request, test_id):
-    test_result = count_test_result(test_id, request.user)
+    test_result = count_test_result(test_id)
     return render(request, 'test_result.html', {'test_result': test_result})
 
 
