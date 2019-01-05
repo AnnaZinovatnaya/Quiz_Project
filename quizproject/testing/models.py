@@ -6,7 +6,7 @@ class Test(models.Model):
     name = models.CharField(max_length=60)
 
     def __str__(self):
-        return self.name
+        return str(self.id) + ':' + str(self.name)
 
 
 class Question(models.Model):

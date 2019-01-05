@@ -3,7 +3,10 @@ from . import models
 from django.shortcuts import render
 from django.urls import reverse
 import uuid
+import logging
 
+
+logger = logging.getLogger('django')
 
 current_user_test_uuid = "00000000000000000000000000000000"
 
@@ -25,8 +28,8 @@ def show_all_tests(request):
         if len(models.Question.objects.filter(test__pk=test.id)) > 0:
             valid_tests.append(test)
             tests.update({test.id: is_taken_by_current_user(test, request.user)})
-
-    print(tests)
+    logger.info('valid_tests: ' + str(valid_tests))
+    logger.info('user_tests: ' + str(tests))
     return render(request, 'allTests.html', context={'valid_tests': valid_tests, 'user_tests': tests})
 
 
@@ -69,7 +72,7 @@ def check_question(request, test_id, question_number):
         user_answers = []
         i = 1
         while i < (number_of_answers + 1):
-            user_answer = request.POST.get('answer'+str(i))
+            user_answer = request.POST.get('answer' + str(i))
 
             if user_answer is None:
                 user_answers.append(False)
