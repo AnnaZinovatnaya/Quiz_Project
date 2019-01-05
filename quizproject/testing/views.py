@@ -6,7 +6,8 @@ import uuid
 import logging
 
 
-logger = logging.getLogger('django')
+logger = logging.getLogger('django_console')
+#logger = logging.getLogger('django_file')
 
 current_user_test_uuid = "00000000000000000000000000000000"
 
