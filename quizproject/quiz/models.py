@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib import auth
 
 
-class Test(models.Model):
+class Quiz(models.Model):
     name = models.CharField(max_length=60)
 
     def __str__(self):
@@ -11,7 +11,7 @@ class Test(models.Model):
 
 class Question(models.Model):
     name = models.CharField(max_length=150)
-    test = models.ForeignKey(Test, on_delete=models.CASCADE)
+    test = models.ForeignKey(Quiz, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name

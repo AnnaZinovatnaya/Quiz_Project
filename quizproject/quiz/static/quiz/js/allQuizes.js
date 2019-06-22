@@ -1,11 +1,11 @@
-let logoutBtn = document.getElementById('logoutButton');
-logoutBtn.addEventListener('mouseenter', something);
-logoutBtn.addEventListener('mouseout', something2);
+let quizesUl = document.getElementById('quizList').getElementsByTagName("LI");
 
-function something() {
-    this.innerHTML = "LOGOUT";
+for (i = 0; i < quizesUl.length; i++) {
+    quizesUl[i].addEventListener('click', startQuiz);
 }
 
-function something2() {
-    this.innerHTML = "Logout";
+function startQuiz(e) {
+    let input = e.target.getElementsByTagName('input');
+    var url= input[0].getAttribute("data-url");
+    window.location = url;
 }

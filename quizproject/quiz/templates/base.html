@@ -2,10 +2,23 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <title>Tests</title>
+    <title>Hanna's Quizes</title>
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'quiz/css/quiz.css' %}" type="text/css" media="screen" >
   </head>
   <body>
-  <h3 align="center">Hanna's Test App</h3>
+  <h3 align="center">Hanna's Quizes</h3>
+
+    {% if user.is_authenticated %}
+      <div class="header">
+        <h3>Hi, {{ user.username }}!</h3>
+        <a href="{% url 'logout' %}"><button id='logoutButton' type="button">Logout</button></a>
+       </div>
+    {% else %}
+      <p>You are not logged in!</p>
+      <a href="{% url 'login' %}">Login</a>
+    {% endif %}
+
     {% block content %}
     {% endblock %}
   </body>

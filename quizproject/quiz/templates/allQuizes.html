@@ -2,22 +2,17 @@
 
 {% block content %}
 {% load custom_tags %}
-  {% if user.is_authenticated %}
-    <h3>Hi, {{ user.username }}!</h3>
-    <a id='logoutButton' href="{% url 'logout' %}">Logout</a>
-    <h2 align="middle">All Tests</h2>
-    {% for test in valid_tests %}
-      <ul>
-        <div class="container">
-          <a href="{% url 'question' test.id 1 %}">{{ test.name }}</a>
-          {% if user_tests|get_at_index:test.id is True %} X {% endif %}
-        </div>
-      </ul>
-    {% endfor %}
-  {% else %}
-    <p>You are not logged in!</p>
-    <a href="{% url 'login' %}">Login</a>
-  {% endif %}
+    <h2 align="middle">All Quizes</h2>
+    <ul id="quizList" style="list-style-type:none;">
+      {% for test in valid_tests %}
+        <li class="quiz-link">
+          <input type="hidden" id="Quiz{{forloop.counter}}" data-url="{% url 'question' test.id 1 %}">
+            {{ test.name }}
+            {% if user_tests|get_at_index:test.id is True %} X {% endif %}
+          </input>
+        </li>
+      {% endfor %}
+    </ul>
 
 {% load staticfiles %}
 <script src="{% static 'quiz/js/allQuizes.js' %}"></script>

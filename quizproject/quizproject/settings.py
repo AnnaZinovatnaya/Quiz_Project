@@ -119,9 +119,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'quiz/static'),
-    BASE_DIR
-
+    os.path.join(BASE_DIR, 'quiz/static')
 ]
 
 LOGIN_REDIRECT_URL = 'home'

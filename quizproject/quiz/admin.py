@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Test, Question, Answer, UserAnswer
+from .models import Quiz, Question, Answer, UserAnswer
 from django.forms.models import BaseInlineFormSet
 from django.core.exceptions import ValidationError
 
@@ -47,6 +47,6 @@ class TestAdmin(admin.ModelAdmin):
     is_valid.boolean = True
 
 
-admin.site.register(Test, TestAdmin)
+admin.site.register(Quiz, TestAdmin)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(UserAnswer)

@@ -27,7 +27,7 @@ def show_all_tests(request):
     valid_tests = []
 
     if not request.user.is_anonymous:
-        for test in models.Test.objects.all():
+        for test in models.Quiz.objects.all():
             if len(models.Question.objects.filter(test__pk=test.id)) > 0:
                 valid_tests.append(test)
                 tests.update({test.id: is_taken_by_current_user(test, request.user)})
@@ -41,7 +41,7 @@ def show_question(request, test_id, question_number):
         global current_user_test_uuid
         current_user_test_uuid = str(uuid.uuid4())
     try:
-        test = models.Test.objects.get(pk=test_id)
+        test = models.Quiz.objects.get(pk=test_id)
 
         # find all questions of a given test
         questions = models.Question.objects.filter(test__pk=test_id)
@@ -51,7 +51,7 @@ def show_question(request, test_id, question_number):
 
         # find answers of the question
         answers = models.Answer.objects.filter(question__pk=question.id)
-    except models.Test.DoesNotExist:
+    except models.Quiz.DoesNotExist:
         raise Http404
     return render(request, 'question.html', {'test': test, 'question_number': question_number,
                                              'question_id': question.id, 'question': question, 'answers': answers})
@@ -59,7 +59,7 @@ def show_question(request, test_id, question_number):
 
 def check_question(request, test_id, question_number):
     try:
-        test = models.Test.objects.get(pk=test_id)
+        test = models.Quiz.objects.get(pk=test_id)
 
         # find all questions of a given test
         questions = models.Question.objects.filter(test__pk=test_id)
@@ -97,7 +97,7 @@ def check_question(request, test_id, question_number):
             # TODO save answers only is user has finished the test (transactions?)
             user_answer_to_save.save()
 
-    except models.Test.DoesNotExist:
+    except models.Quiz.DoesNotExist:
         raise Http404
     return render(request, 'question_result.html', {'test': test, 'question': question, 'answers': answers, 'user_answers': user_answers, 'next_question': str(next_question)})
 
