@@ -25,13 +25,15 @@ def show_all_tests(request):
     tests = {}
     # tests that have at least one question
     valid_tests = []
-    for test in models.Test.objects.all():
-        if len(models.Question.objects.filter(test__pk=test.id)) > 0:
-            valid_tests.append(test)
-            tests.update({test.id: is_taken_by_current_user(test, request.user)})
-    logger.info('valid_tests: ' + str(valid_tests))
-    logger.info('user_tests: ' + str(tests))
-    return render(request, 'allTests.html', context={'valid_tests': valid_tests, 'user_tests': tests})
+
+    if not request.user.is_anonymous:
+        for test in models.Test.objects.all():
+            if len(models.Question.objects.filter(test__pk=test.id)) > 0:
+                valid_tests.append(test)
+                tests.update({test.id: is_taken_by_current_user(test, request.user)})
+        logger.info('valid_tests: ' + str(valid_tests))
+        logger.info('user_tests: ' + str(tests))
+    return render(request, 'allQuizes.html', context={'valid_tests': valid_tests, 'user_tests': tests})
 
 
 def show_question(request, test_id, question_number):

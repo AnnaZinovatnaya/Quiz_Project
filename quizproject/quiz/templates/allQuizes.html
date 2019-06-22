@@ -4,7 +4,7 @@
 {% load custom_tags %}
   {% if user.is_authenticated %}
     <h3>Hi, {{ user.username }}!</h3>
-    <a href="{% url 'logout' %}">Logout</a>
+    <a id='logoutButton' href="{% url 'logout' %}">Logout</a>
     <h2 align="middle">All Tests</h2>
     {% for test in valid_tests %}
       <ul>
@@ -19,4 +19,6 @@
     <a href="{% url 'login' %}">Login</a>
   {% endif %}
 
+{% load staticfiles %}
+<script src="{% static 'quiz/js/allQuizes.js' %}"></script>
 {% endblock %}
